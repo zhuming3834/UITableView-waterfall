@@ -152,14 +152,17 @@
 	if (scrollView == tableView1) {
 		[tableView2 setContentOffset:tableView1.contentOffset];
 		[tableView3 setContentOffset:tableView1.contentOffset];
+		NSLog(@"tableView1");
 	}
 	if (scrollView == tableView2) {
 		[tableView1 setContentOffset:tableView2.contentOffset];
 		[tableView3 setContentOffset:tableView2.contentOffset];
+		NSLog(@"tableView2");
 	}
 	if (scrollView == tableView3) {
 		[tableView2 setContentOffset:tableView3.contentOffset];
 		[tableView1 setContentOffset:tableView3.contentOffset];
+		NSLog(@"tableView3");
 	}
 }
 /**
@@ -191,33 +194,58 @@
 	NSString *identify = model.identity;
 	//解析下载后的数据
 	NSDictionary *dice = [NSJSONSerialization JSONObjectWithData:downloadData options:NSJSONReadingMutableContainers error:nil];
+	
+	UITableView *tableView1 = (UITableView *)[self.view viewWithTag:100];
+	UITableView *tableView2 = (UITableView *)[self.view viewWithTag:101];
+	UITableView *tableView3 = (UITableView *)[self.view viewWithTag:102];
+	
 	if ([identify isEqualToString:@"0"]) {
-		UITableView *tableView = (UITableView *)[self.view viewWithTag:100];
+//		UITableView *tableView = (UITableView *)[self.view viewWithTag:100];
 		BaseModel *dataModel = [[BaseModel alloc] init];
-		self.tableViewArr1 = [dataModel setBaseModelWithDictionary:dice];
-		[tableView reloadData];
+//		self.tableViewArr1 = [dataModel setBaseModelWithDictionary:dice];
+		[self myArr:[dataModel setBaseModelWithDictionary:dice]];
+		[tableView1 reloadData];
+		[tableView2 reloadData];
+		[tableView3 reloadData];
 	}
-	if ([identify isEqualToString:@"1"]) {
-		UITableView *tableView = (UITableView *)[self.view viewWithTag:101];
-		BaseModel *dataModel = [[BaseModel alloc] init];
-		self.tableViewArr2 = [dataModel setBaseModelWithDictionary:dice];
-		[tableView reloadData];
-	}
-	if ([identify isEqualToString:@"2"]) {
-		UITableView *tableView = (UITableView *)[self.view viewWithTag:102];
-		BaseModel *dataModel = [[BaseModel alloc] init];
-		self.tableViewArr3 = [dataModel setBaseModelWithDictionary:dice];
-		[tableView reloadData];
-	}
+//	if ([identify isEqualToString:@"1"]) {
+//		UITableView *tableView = (UITableView *)[self.view viewWithTag:101];
+//		BaseModel *dataModel = [[BaseModel alloc] init];
+//		self.tableViewArr2 = [dataModel setBaseModelWithDictionary:dice];
+//		[tableView reloadData];
+//	}
+//	if ([identify isEqualToString:@"2"]) {
+//		UITableView *tableView = (UITableView *)[self.view viewWithTag:102];
+//		BaseModel *dataModel = [[BaseModel alloc] init];
+//		self.tableViewArr3 = [dataModel setBaseModelWithDictionary:dice];
+//		[tableView reloadData];
+//	}
 }
-
-
-
-
-
-
-
-
+//一个数据源拆分为三个
+- (void)myArr:(NSArray *)dataArr{
+	NSInteger co = dataArr.count;
+	NSLog(@"co = %ld",co);
+	NSMutableArray *arr1 = [NSMutableArray array];
+	NSMutableArray *arr2 = [NSMutableArray array];
+	NSMutableArray *arr3 = [NSMutableArray array];
+	NSInteger num = 0;
+	while (num < co - 1) {
+		[arr1 addObject:dataArr[num]];
+		if ((num + 1) >co - 1|| (num + 2) >co - 1) {
+			break;
+		}
+		[arr2 addObject:dataArr[num + 1]];
+		[arr3 addObject:dataArr[num + 2]];
+		
+		NSLog(@"num  --  = %ld",num);
+		num = num + 3;
+	}
+	
+	self.tableViewArr1 = arr1;
+	self.tableViewArr2 = arr2;
+	self.tableViewArr3 = arr3;
+	
+}
 
 
 - (void)didReceiveMemoryWarning {

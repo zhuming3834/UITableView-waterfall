@@ -21,14 +21,6 @@
 
 - (NSArray *)setBaseModelWithDictionary:(NSDictionary *)dice;
 
-
-
-
-
-
-
-
-
 @end
 
 

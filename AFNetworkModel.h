@@ -17,16 +17,12 @@
 
 @end
 
-
-
 @interface AFNetworkModel : NSObject
-
 
 @property (nonatomic,copy)NSString * identity;
 
 @property (nonatomic,strong)id<AFNetworkDownloadDelegat>delegate;
 
 - (void)downloadDataFromURLString:(NSString *)URLString;
-
 
 @end
